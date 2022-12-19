@@ -18,7 +18,7 @@ Source1: %{version_postgresql_modified_for_babelfish}.tar.gz
 %global source1_sha512 82ead048d6e3018062981db79820d72d910c78a1ae0a5a03c10dce49dc6b7d368c464f3a8bcd63b18a91d2cc7e67f530fb64d63a9c56f9408f322ab4ffd0894a
 %global source1_url https://github.com/babelfish-for-postgresql/postgresql_modified_for_babelfish/archive/refs/tags/%{version_postgresql_modified_for_babelfish}.tar.gz
 	
-Patch1: babelfishpg-antlr-4.10.patch
+#Patch1: babelfishpg-antlr-4.10.patch
 Patch2: babelfishpg-antlr-classpath.patch
 Patch3: babelfishpg-cflags.patch
 Patch4: babelfishpg-encoding-conversion.patch
@@ -86,7 +86,6 @@ popd
 
 %setup -q -a 1 -n babelfish_extensions-%{version}
 
-%patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
