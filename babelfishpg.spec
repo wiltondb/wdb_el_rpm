@@ -19,11 +19,10 @@ Source1: %{version_postgresql_modified_for_babelfish}.tar.gz
 %global source1_url https://github.com/babelfish-for-postgresql/postgresql_modified_for_babelfish/archive/refs/tags/%{version_postgresql_modified_for_babelfish}.tar.gz
 	
 #Patch1: babelfishpg-antlr-4.10.patch
-Patch2: babelfishpg-antlr-classpath.patch
+#Patch2: babelfishpg-antlr-classpath.patch
 Patch3: babelfishpg-cflags.patch
 Patch4: babelfishpg-encoding-conversion.patch
  
-BuildRequires: antlr4
 BuildRequires: antlr4-cpp-runtime-devel
 BuildRequires: bison
 BuildRequires: cmake
@@ -86,7 +85,6 @@ popd
 
 %setup -q -a 1 -n babelfish_extensions-%{version}
 
-%patch2 -p1
 %patch3 -p1
 %patch4 -p1
 	
@@ -112,7 +110,7 @@ popd
 
 # tsql
 pushd ./contrib/babelfishpg_tsql/antlr
-export ANTLR4_JAVA_BIN=/usr/lib/jvm/java-17-openjdk/bin/java
+export ANTLR4_JAVA_BIN=/usr/lib/jvm/java-11-openjdk/bin/java
 %cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo
 %cmake_build
 ln -s ./redhat-linux-build/antlr4cpp_generated_src
