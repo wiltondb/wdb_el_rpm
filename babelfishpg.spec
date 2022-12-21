@@ -34,6 +34,7 @@ BuildRequires: libxml2-devel
 BuildRequires: make
 BuildRequires: perl-libs
 BuildRequires: perl(FindBin)
+BuildRequires: utf8cpp-devel
 BuildRequires: wget
 
 BuildRequires: postgresql-private-devel = %{version_postgres_epoch}:%{version_postgres}
