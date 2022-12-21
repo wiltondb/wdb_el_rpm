@@ -25,14 +25,14 @@ Patch4: babelfishpg-encoding-conversion.patch
  
 BuildRequires: antlr4-cpp-runtime-devel
 BuildRequires: bison
-BuildRequires: cmake
+BuildRequires: cmake3
 BuildRequires: flex
-BuildRequires: gcc
-BuildRequires: g++
+BuildRequires: devtoolset-8-gcc
+BuildRequires: devtoolset-8-gcc-c++
 BuildRequires: java-devel
 BuildRequires: libxml2-devel
 BuildRequires: make
-BuildRequires: perl-lib
+BuildRequires: perl-libs
 BuildRequires: perl(FindBin)
 BuildRequires: wget
 
@@ -89,6 +89,7 @@ popd
 %patch4 -p1
 	
 %build
+. /opt/rh/devtoolset-8/enable
 export cmake=cmake
 export PG_CONFIG=/usr/bin/pg_config
 export PG_SRC=`pwd`/postgresql_modified_for_babelfish-%{version_postgresql_modified_for_babelfish}
@@ -110,11 +111,9 @@ popd
 
 # tsql
 pushd ./contrib/babelfishpg_tsql/antlr
-export ANTLR4_JAVA_BIN=/usr/lib/jvm/java-11-openjdk/bin/java
-%cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo
-%cmake_build
-ln -s ./redhat-linux-build/antlr4cpp_generated_src
-ln -s ./redhat-linux-build/libantlr_tsql.a
+export ANTLR4_JAVA_BIN=/usr/lib/jvm/java-1.8.0-openjdk/bin/java
+%cmake3 -DCMAKE_BUILD_TYPE=RelWithDebInfo
+%cmake3_build
 popd
 pushd ./contrib/babelfishpg_tsql/
 ln -s `pwd`/../babelfishpg_common/babelfishpg_common.so
