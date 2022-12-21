@@ -5,7 +5,7 @@ Name: babelfishpg
 Version: BABEL_2_2_0
 %global version_postgres %{version_postgres_major}.%{version_postgres_minor}.%{version}
 %global version_postgresql_modified_for_babelfish %{version}__PG_%{version_postgres_major}_%{version_postgres_minor}
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 Summary: Babelfish extensions for PostgreSQL
 License: PostgreSQL
@@ -203,6 +203,10 @@ cp -p ./contrib/babelfishpg_tsql/babelfishpg_tsql.control %{buildroot}%{_datadir
 %{_datadir}/pgsql/extension/babelfishpg_tsql.control
 
 %changelog
+* Wed Dec 21 2022 Alex Kasko <alex@staticlibs.net> - BABEL_2_2_0-4
+	
+- Use utf8cpp instead of codecvt with antlr C++ runtime
+
 * Tue Dec 20 2022 Alex Kasko <alex@staticlibs.net> - BABEL_2_2_0-3
 	
 - Use cmake directly when building TSQL module

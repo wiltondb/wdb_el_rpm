@@ -1,8 +1,8 @@
 diff --git a/contrib/babelfishpg_tsql/Makefile b/contrib/babelfishpg_tsql/Makefile
-index d6671444..ef3f01c5 100644
+index d667144..38b5bec 100644
 --- a/contrib/babelfishpg_tsql/Makefile
 +++ b/contrib/babelfishpg_tsql/Makefile
-@@ -74,17 +74,16 @@ OBJS += src/encoding/mb/conversion_procs/utf8_and_sjis/utf8_and_sjis.o
+@@ -74,17 +74,17 @@ OBJS += src/encoding/mb/conversion_procs/utf8_and_sjis/utf8_and_sjis.o
  OBJS += src/encoding/mb/conversion_procs/utf8_and_uhc/utf8_and_uhc.o
  OBJS += src/encoding/mb/conversion_procs/utf8_and_win/utf8_and_win.o
  
@@ -17,13 +17,14 @@ index d6671444..ef3f01c5 100644
  PG_CXXFLAGS += -Wno-deprecated -Wno-error=attributes -Wno-suggest-attribute=format # disable some warnings from ANTLR runtime header
  PG_CXXFLAGS += -Wno-undef -Wall -Wcpp
  PG_CXXFLAGS += -Wno-register # otherwise C++17 gags on PostgreSQL headers
++PG_CXXFLAGS += -DUSE_UTF8_INSTEAD_OF_CODECVT
  PG_CXXFLAGS += -I$(ANTLR4_RUNTIME_INCLUDE_DIR)
 -PG_CFLAGS += -g
 +PG_CFLAGS += -g -fcommon
  PG_CPPFLAGS += -I$(TSQLSRC) -I$(PG_SRC) -DFAULT_INJECTOR
  
  SHLIB_LINK += -L$(ANTLR4_RUNTIME_LIB_DIR) $(ANTLR4_RUNTIME_LIB) -lcrypto -L$(pkglibdir) -l:babelfishpg_common.so
-@@ -163,13 +162,6 @@ GEN_KEYWORDLIST = $(PERL) -I $(TOOLSDIR) $(TOOLSDIR)/gen_keywordlist.pl
+@@ -163,13 +163,6 @@ GEN_KEYWORDLIST = $(PERL) -I $(TOOLSDIR) $(TOOLSDIR)/gen_keywordlist.pl
  GEN_KEYWORDLIST_DEPS = $(TOOLSDIR)/gen_keywordlist.pl $(TOOLSDIR)/PerfectHash.pm
  TSQLSRC = .
  
@@ -38,7 +39,7 @@ index d6671444..ef3f01c5 100644
  src/pl_gram.h: src/pl_gram.c
  	touch $@
 diff --git a/contrib/babelfishpg_tsql/antlr/CMakeLists.txt b/contrib/babelfishpg_tsql/antlr/CMakeLists.txt
-index 4c464755..2804a9dd 100644
+index 4c46475..970e3ea 100644
 --- a/contrib/babelfishpg_tsql/antlr/CMakeLists.txt
 +++ b/contrib/babelfishpg_tsql/antlr/CMakeLists.txt
 @@ -5,14 +5,15 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake-dir)
@@ -48,7 +49,7 @@ index 4c464755..2804a9dd 100644
 -set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -O2 -ggdb -w -Wno-deprecated")
 -set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -fPIC -O2 -ggdb -w -Wno-deprecated")
 +set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
-+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
++set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -DUSE_UTF8_INSTEAD_OF_CODECVT")
  
  message(STATUS "CMAKE_C_FLAGS=${CMAKE_C_FLAGS}")
 +message(STATUS "CMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}")
