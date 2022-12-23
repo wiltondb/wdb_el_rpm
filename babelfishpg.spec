@@ -37,6 +37,9 @@ BuildRequires: java-devel
 BuildRequires: libxml2-devel
 BuildRequires: make
 BuildRequires: perl-libs
+%if 0%{?el9}
+BuildRequires: perl-lib
+%endif
 BuildRequires: perl(FindBin)
 BuildRequires: utf8cpp-devel
 BuildRequires: wget
