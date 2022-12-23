@@ -5,7 +5,7 @@ Name: babelfishpg
 Version: BABEL_2_2_0
 %global version_postgres %{version_postgres_major}.%{version_postgres_minor}.%{version}
 %global version_postgresql_modified_for_babelfish %{version}__PG_%{version_postgres_major}_%{version_postgres_minor}
-Release: 4%{?dist}
+Release: 5%{?dist}
 
 Summary: Babelfish extensions for PostgreSQL
 License: PostgreSQL
@@ -18,17 +18,21 @@ Source1: %{version_postgresql_modified_for_babelfish}.tar.gz
 %global source1_sha512 82ead048d6e3018062981db79820d72d910c78a1ae0a5a03c10dce49dc6b7d368c464f3a8bcd63b18a91d2cc7e67f530fb64d63a9c56f9408f322ab4ffd0894a
 %global source1_url https://github.com/babelfish-for-postgresql/postgresql_modified_for_babelfish/archive/refs/tags/%{version_postgresql_modified_for_babelfish}.tar.gz
 	
-#Patch1: babelfishpg-antlr-4.10.patch
-#Patch2: babelfishpg-antlr-classpath.patch
-Patch3: babelfishpg-cflags.patch
-Patch4: babelfishpg-encoding-conversion.patch
+Patch1: babelfishpg-cflags.patch
+Patch2: babelfishpg-encoding-conversion.patch
+
+%if 0%{?el7}
+%global cmake %cmake3
+%global cmake_build %cmake3_build
+%global cmake_install %cmake3_install
+%endif
  
 BuildRequires: antlr4-cpp-runtime-devel
 BuildRequires: bison
-BuildRequires: cmake3
+BuildRequires: cmake%{?el7:3}
 BuildRequires: flex
-BuildRequires: devtoolset-8-gcc
-BuildRequires: devtoolset-8-gcc-c++
+BuildRequires: %{?el7:devtoolset-8-}gcc
+BuildRequires: %{?el7:devtoolset-8-}gcc-c++
 BuildRequires: java-devel
 BuildRequires: libxml2-devel
 BuildRequires: make
@@ -86,12 +90,11 @@ popd
 
 %setup -q -a 1 -n babelfish_extensions-%{version}
 
-%patch3 -p1
-%patch4 -p1
+%patch1 -p1
+%patch2 -p1
 	
 %build
-. /opt/rh/devtoolset-8/enable
-export cmake=cmake
+%{?el7:. /opt/rh/devtoolset-8/enable}
 export PG_CONFIG=/usr/bin/pg_config
 export PG_SRC=`pwd`/postgresql_modified_for_babelfish-%{version_postgresql_modified_for_babelfish}
 
@@ -113,8 +116,8 @@ popd
 # tsql
 pushd ./contrib/babelfishpg_tsql/antlr
 export ANTLR4_JAVA_BIN=/usr/lib/jvm/java-1.8.0-openjdk/bin/java
-%cmake3 -DCMAKE_BUILD_TYPE=RelWithDebInfo
-%cmake3_build
+%cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo
+%cmake_build
 popd
 pushd ./contrib/babelfishpg_tsql/
 ln -s `pwd`/../babelfishpg_common/babelfishpg_common.so
@@ -204,18 +207,17 @@ cp -p ./contrib/babelfishpg_tsql/babelfishpg_tsql.control %{buildroot}%{_datadir
 %{_datadir}/pgsql/extension/babelfishpg_tsql.control
 
 %changelog
+* Fri Dec 23 2022 Alex Kasko <alex@staticlibs.net - BABEL_2_2_0-5
+- Use macros to have the same spec for el 7, 8 and 9
+
 * Wed Dec 21 2022 Alex Kasko <alex@staticlibs.net> - BABEL_2_2_0-4
-	
 - Use utf8cpp instead of codecvt with antlr C++ runtime
 
 * Tue Dec 20 2022 Alex Kasko <alex@staticlibs.net> - BABEL_2_2_0-3
-	
 - Use cmake directly when building TSQL module
 
 * Sat Dec 17 2022 Alex Kasko <alex@staticlibs.net> - BABEL_2_2_0-2
-	
 - Full working build
 	
 * Thu Dec 8 2022 Alex Kasko <alex@staticlibs.net> - BABEL_2_2_0-1
-	
 - Initial packaging of BABEL_2_2_0
