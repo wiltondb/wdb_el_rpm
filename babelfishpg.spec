@@ -5,7 +5,7 @@ Name: babelfishpg
 Version: BABEL_2_2_0
 %global version_postgres %{version_postgres_major}.%{version_postgres_minor}.%{version}
 %global version_postgresql_modified_for_babelfish %{version}__PG_%{version_postgres_major}_%{version_postgres_minor}
-Release: 5%{?dist}
+Release: 6%{?dist}
 
 Summary: Babelfish extensions for PostgreSQL
 License: PostgreSQL
@@ -214,6 +214,9 @@ cp -p ./contrib/babelfishpg_tsql/babelfishpg_tsql.control %{buildroot}%{_datadir
 %{_datadir}/pgsql/extension/babelfishpg_tsql.control
 
 %changelog
+* Fri Dec 23 2022 Alex Kasko <alex@staticlibs.net - BABEL_2_2_0-6
+- El 9 perl fix
+
 * Fri Dec 23 2022 Alex Kasko <alex@staticlibs.net - BABEL_2_2_0-5
 - Use macros to have the same spec for el 7, 8 and 9
 
