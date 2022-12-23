@@ -115,9 +115,13 @@ popd
 
 # tsql
 pushd ./contrib/babelfishpg_tsql/antlr
-export ANTLR4_JAVA_BIN=/usr/lib/jvm/java-1.8.0-openjdk/bin/java
+export ANTLR4_JAVA_BIN=/usr/bin/java
 %cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo
 %cmake_build
+%if 0%{?el9}
+ln -s ./redhat-linux-build/antlr4cpp_generated_src
+ln -s ./redhat-linux-build/libantlr_tsql.a
+%endif
 popd
 pushd ./contrib/babelfishpg_tsql/
 ln -s `pwd`/../babelfishpg_common/babelfishpg_common.so
