@@ -1,10 +1,8 @@
-diff --git a/contrib/babelfishpg_tsql/Makefile b/contrib/babelfishpg_tsql/Makefile
-index d667144..38b5bec 100644
---- a/contrib/babelfishpg_tsql/Makefile
-+++ b/contrib/babelfishpg_tsql/Makefile
-@@ -74,17 +74,17 @@ OBJS += src/encoding/mb/conversion_procs/utf8_and_sjis/utf8_and_sjis.o
- OBJS += src/encoding/mb/conversion_procs/utf8_and_uhc/utf8_and_uhc.o
- OBJS += src/encoding/mb/conversion_procs/utf8_and_win/utf8_and_win.o
+--- old/contrib/babelfishpg_tsql/Makefile	2023-01-23 11:35:47.000000000 +0000
++++ new/contrib/babelfishpg_tsql/Makefile	2023-01-31 12:13:42.441151667 +0000
+@@ -68,18 +68,18 @@
+ OBJS += src/pltsql_ruleutils.o
+ OBJS += src/forjson.o
  
 -export ANTLR4_JAVA_BIN=java
  export ANTLR4_RUNTIME_LIB=-lantlr4-runtime
@@ -12,6 +10,7 @@ index d667144..38b5bec 100644
 -export ANTLR4_RUNTIME_LIB_DIR=/usr/local/lib
 +export ANTLR4_RUNTIME_INCLUDE_DIR=/usr/include/antlr4-runtime
 +export ANTLR4_RUNTIME_LIB_DIR=./
+ OBJS += src/pltsql_bulkcopy.o
  
  PG_CXXFLAGS += -g -Werror
  PG_CXXFLAGS += -Wno-deprecated -Wno-error=attributes -Wno-suggest-attribute=format # disable some warnings from ANTLR runtime header
@@ -20,11 +19,11 @@ index d667144..38b5bec 100644
 +PG_CXXFLAGS += -DUSE_UTF8_INSTEAD_OF_CODECVT
  PG_CXXFLAGS += -I$(ANTLR4_RUNTIME_INCLUDE_DIR)
 -PG_CFLAGS += -g
-+PG_CFLAGS += -g -fcommon
++PG_CFLAGS += -g -fcommon -Wno-error=format-security
  PG_CPPFLAGS += -I$(TSQLSRC) -I$(PG_SRC) -DFAULT_INJECTOR
  
  SHLIB_LINK += -L$(ANTLR4_RUNTIME_LIB_DIR) $(ANTLR4_RUNTIME_LIB) -lcrypto -L$(pkglibdir) -l:babelfishpg_common.so
-@@ -163,13 +163,6 @@ GEN_KEYWORDLIST = $(PERL) -I $(TOOLSDIR) $(TOOLSDIR)/gen_keywordlist.pl
+@@ -159,13 +159,6 @@
  GEN_KEYWORDLIST_DEPS = $(TOOLSDIR)/gen_keywordlist.pl $(TOOLSDIR)/PerfectHash.pm
  TSQLSRC = .
  
@@ -38,11 +37,9 @@ index d667144..38b5bec 100644
  # See notes in src/backend/parser/Makefile about the following two rules
  src/pl_gram.h: src/pl_gram.c
  	touch $@
-diff --git a/contrib/babelfishpg_tsql/antlr/CMakeLists.txt b/contrib/babelfishpg_tsql/antlr/CMakeLists.txt
-index 4c46475..970e3ea 100644
---- a/contrib/babelfishpg_tsql/antlr/CMakeLists.txt
-+++ b/contrib/babelfishpg_tsql/antlr/CMakeLists.txt
-@@ -5,14 +5,15 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake-dir)
+--- old/contrib/babelfishpg_tsql/antlr/CMakeLists.txt	2023-01-23 11:35:47.000000000 +0000
++++ new/contrib/babelfishpg_tsql/antlr/CMakeLists.txt	2023-01-31 12:13:30.211983111 +0000
+@@ -5,14 +5,15 @@
  
  # compiler must be 11 or 14
  set(CMAKE_CXX_STANDARD 14)
