@@ -5,7 +5,7 @@ Name: babelfishpg
 Version: BABEL_2_3_0
 %global version_postgres %{version_postgres_major}.%{version_postgres_minor}.%{version}
 %global version_postgresql_modified_for_babelfish %{version}__PG_%{version_postgres_major}_%{version_postgres_minor}
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 Summary: Babelfish extensions for PostgreSQL
 License: PostgreSQL
@@ -20,6 +20,10 @@ Source1: %{version_postgresql_modified_for_babelfish}.tar.gz
 	
 Patch1: babelfishpg-cflags.patch
 Patch2: babelfishpg-tds-format-warning.patch
+# https://github.com/babelfish-for-postgresql/babelfish_extensions/issues/997
+Patch3: babelfishpg-sp_columns.patch
+# https://github.com/babelfish-for-postgresql/babelfish_extensions/issues/1004
+Patch4: babelfishpg-sp_fkeys.patch
 
 %if 0%{?el7}
 %global cmake %cmake3
@@ -95,6 +99,8 @@ popd
 
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
+%patch4 -p1
 	
 %build
 %{?el7:. /opt/rh/devtoolset-8/enable}
@@ -218,6 +224,9 @@ cp -p ./contrib/babelfishpg_tsql/babelfishpg_tsql.control %{buildroot}%{_datadir
 %{_datadir}/pgsql/extension/babelfishpg_tsql.control
 
 %changelog
+* Tue Mar  7 2023 Alex Kasko <alex@staticlibs.net> - BABEL_2_3_0-3
+- SQL patches for JDBC introspection, clean extension install only
+
 * Wed Feb 15 2023 Alex Kasko <alex@staticlibs.net> - BABEL_2_3_0-2
 - Update to the same upstream tag that was re-created on different commit
 
