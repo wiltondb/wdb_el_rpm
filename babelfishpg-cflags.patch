@@ -13,20 +13,18 @@
  
  OBJS += src/pltsql_bulkcopy.o
  
-@@ -85,8 +84,12 @@ PG_CXXFLAGS += -Wno-deprecated -Wno-error=attributes -Wno-suggest-attribute=form
+@@ -85,8 +84,10 @@ PG_CXXFLAGS += -Wno-deprecated -Wno-error=attributes -Wno-suggest-attribute=form
  PG_CXXFLAGS += -Wno-undef -Wall -Wcpp
  PG_CXXFLAGS += -Wno-register # otherwise C++17 gags on PostgreSQL headers
  PG_CXXFLAGS += -I$(ANTLR4_RUNTIME_INCLUDE_DIR)
-+# GCC 13 ANTLR headers error:
-+# 'virtual bool antlr4::tree::ParseTree::operator==(const antlr4::tree::ParseTree&) const' was hidden
-+PG_CXXFLAGS += -Wno-error=overloaded-virtual
++PG_CXXFLAGS += -std=c++14
  PG_CFLAGS += -g -Werror
  PG_CFLAGS += -fstack-protector-strong
 +PG_CFLAGS += -fcommon -Wno-error=format-security -Wno-error=maybe-uninitialized
  PG_CPPFLAGS += -I$(TSQLSRC) -I$(PG_SRC) -DFAULT_INJECTOR
  
  SHLIB_LINK += -L$(ANTLR4_RUNTIME_LIB_DIR) $(ANTLR4_RUNTIME_LIB) -lcrypto
-@@ -166,13 +169,6 @@ GEN_KEYWORDLIST = $(PERL) -I $(TOOLSDIR) $(TOOLSDIR)/gen_keywordlist.pl
+@@ -166,13 +167,6 @@ GEN_KEYWORDLIST = $(PERL) -I $(TOOLSDIR) $(TOOLSDIR)/gen_keywordlist.pl
  GEN_KEYWORDLIST_DEPS = $(TOOLSDIR)/gen_keywordlist.pl $(TOOLSDIR)/PerfectHash.pm
  TSQLSRC = .
  
