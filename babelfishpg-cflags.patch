@@ -17,7 +17,7 @@
  PG_CXXFLAGS += -Wno-undef -Wall -Wcpp
  PG_CXXFLAGS += -Wno-register # otherwise C++17 gags on PostgreSQL headers
  PG_CXXFLAGS += -I$(ANTLR4_RUNTIME_INCLUDE_DIR)
-+PG_CXXFLAGS += -std=c++14
++PG_CXXFLAGS += -std=c++14 -DUSE_UTF8_INSTEAD_OF_CODECVT
  PG_CFLAGS += -g -Werror
  PG_CFLAGS += -fstack-protector-strong
 +PG_CFLAGS += -fcommon -Wno-error=format-security -Wno-error=maybe-uninitialized
