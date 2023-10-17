@@ -8,7 +8,7 @@ Name: wiltondb
 %global version_orig_tarball_package 1
 %global version_postgres %{version_postgres_epoch}:%{version_postgres_major}.%{version_postgres_minor}.wiltondb%{version_wiltondb}_%{version_wiltondb_pg_release}
 Version: %{version_wiltondb}_%{version_wiltondb_pg_release}_%{version_wiltondb_bbf_release}
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 Summary: Wilton DB build of Babelfish extensions for PostgreSQL
 License: PostgreSQL
@@ -91,7 +91,13 @@ popd
 %setup -q -n %{source0_dirname}
 
 %build
-%{?el7:. /opt/rh/devtoolset-8/enable}
+%if 0%{?el7}
+. /opt/rh/devtoolset-8/enable
+mkdir el7bin
+ln -s /usr/bin/cmake3 ./el7bin/cmake
+export PATH=$PATH:`pwd`/el7bin/
+%endif
+
 export PG_CONFIG=/usr/bin/pg_config
 export PG_SRC=`pwd`/postgresql_modified_for_babelfish
 export ANTLR4_JAVA_BIN=/usr/bin/java
@@ -229,8 +235,11 @@ cp -p ./contrib/babelfishpg_tsql/babelfishpg_tsql.control %{buildroot}%{_datadir
 %{_datadir}/pgsql/extension/babelfishpg_tsql.control
 
 %changelog
+* Tue Oct 17 2023 WiltonDB Software <info@wiltondb.com> - 3.3_2_3-2
+- EL7 build fix
+
 * Tue Oct 17 2023 WiltonDB Software <info@wiltondb.com> - 3.3_2_3-1
-- Wiltondb3.3 initial build.
+- Wiltondb3.3 initial build
 
 * Fri Jun 30 2023 Alex Kasko <alex@staticlibs.net> - BABEL_3_2-1
 - Update to BABEL_3_2_STABLE (c96f3c8)
