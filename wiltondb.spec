@@ -8,7 +8,7 @@ Name: wiltondb
 %global version_orig_tarball_package 1
 %global version_postgres %{version_postgres_epoch}:%{version_postgres_major}.%{version_postgres_minor}.wiltondb%{version_wiltondb}_%{version_wiltondb_pg_release}
 Version: %{version_wiltondb}_%{version_wiltondb_pg_release}_%{version_wiltondb_bbf_release}
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 Summary: Wilton DB build of Babelfish extensions for PostgreSQL
 License: PostgreSQL
@@ -20,6 +20,7 @@ Url: https://wiltondb.com/
 %global source0_package %{version_wiltondb}-%{version_wiltondb_pg_release}-%{version_wiltondb_bbf_release}-%{version_orig_tarball_package}~focal
 %global source0_url https://launchpad.net/~wiltondb/+archive/ubuntu/wiltondb/+sourcefiles/wiltondb/%{source0_package}/%{source0_filename}
 Source0: %{source0_filename}
+Source1: wiltondb-setup
 	
 BuildRequires: antlr4-cpp-runtime-devel
 BuildRequires: bison
@@ -123,8 +124,11 @@ make #%{?_smp_mflags}
 popd
 
 %install
+mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_libdir}/pgsql
 mkdir -p %{buildroot}%{_datadir}/pgsql/extension
+
+cp -p %{SOURCE1} %{buildroot}%{_bindir}/
 
 # money
 cp -p ./contrib/babelfishpg_money/babelfishpg_money.so %{buildroot}%{_libdir}/pgsql/
@@ -179,6 +183,7 @@ cp -p ./contrib/babelfishpg_tsql/sql/babelfishpg_tsql--3.3.0.sql %{buildroot}%{_
 cp -p ./contrib/babelfishpg_tsql/babelfishpg_tsql.control %{buildroot}%{_datadir}/pgsql/extension/
 
 %files
+%{_bindir}/wiltondb-setup
 %doc README.md
 %license LICENSE.PostgreSQL
  
@@ -235,6 +240,9 @@ cp -p ./contrib/babelfishpg_tsql/babelfishpg_tsql.control %{buildroot}%{_datadir
 %{_datadir}/pgsql/extension/babelfishpg_tsql.control
 
 %changelog
+* Wed Oct 18 2023 WiltonDB Software <info@wiltondb.com> - 3.3_2_3-3
+- Setup script added
+
 * Tue Oct 17 2023 WiltonDB Software <info@wiltondb.com> - 3.3_2_3-2
 - EL7 build fix
 
