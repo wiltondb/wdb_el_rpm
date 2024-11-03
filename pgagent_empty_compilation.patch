@@ -1,0 +1,28 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index a1a8e3f..a72353c 100755
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -116,7 +116,12 @@ IF(WIN32)
+     SET(_srcs ${_srcs} pgagent.rc)
+ ENDIF(WIN32)
+ 
+-ADD_EXECUTABLE(pgagent ${_srcs})
++IF (EMPTY_COMPILATION)
++    ADD_EXECUTABLE(pgagent empty.cpp)
++ELSE()
++    ADD_EXECUTABLE(pgagent ${_srcs})
++ENDIF()
++
+ IF(UNIX AND NOT APPLE)
+ TARGET_LINK_LIBRARIES(
+         pgagent ${PG_LIBRARIES} -pthread
+diff --git a/empty.cpp b/empty.cpp
+new file mode 100644
+index 0000000..2b8c6ac
+--- /dev/null
++++ b/empty.cpp
+@@ -0,0 +1,4 @@
++
++int main() {
++    return 0;
++}
